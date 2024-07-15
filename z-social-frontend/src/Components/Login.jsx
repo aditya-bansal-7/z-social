@@ -6,6 +6,7 @@ import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logo.png';
 import {gapi} from 'gapi-script';
 import { client } from '../client';
+import Telegram_login from './Telegram_login';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -47,7 +48,7 @@ const Login = () => {
                 <div className='p-5 '>
                     <img src={logo} alt="Google" width="130px" />
                 </div>
-                <div className=' shadow-2xl'>
+                <div className='flex flex-col gap-5 shadow-2xl'>
                     <GoogleLogin clientId={process.env.REACT_APP_GOOGLE_API_TOKEN} 
                         render={(renderProps) => (
                         <button type='button' className=' bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none'
@@ -55,11 +56,12 @@ const Login = () => {
                             disabled={renderProps.disabled}>
                             <FcGoogle className='mr-4'/> Sign in with Google
                         </button>
-                    )} 
+                    )}
                     onSuccess={responseGoogle}
                     onFailure={responseGoogle}
                     cookiePolicy={'single_host_origin'}                
                     />
+                    <Telegram_login />
                 </div>
             </div>
         </div>

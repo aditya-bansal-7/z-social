@@ -89,6 +89,7 @@ const UserProfile = () => {
                   </button>
                 )}
                 onLogoutSuccess={logout}
+                onFailure={logout}
                 cookiePolicy="single_host_origin"
               />
             )}
