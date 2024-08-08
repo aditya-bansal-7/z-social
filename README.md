@@ -78,6 +78,6 @@ Contributions are welcome! Here's how you can help:
 
 For issues or feature requests, please open an issue [here](https://github.com/aditya-bansal-7/z-social/issues).
 
-## Support
+## Contact
 
 For any questions or inquiries, please contact at adityabansalsafe@gmail.com
