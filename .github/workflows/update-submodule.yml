@@ -1,0 +1,37 @@
+name: Update Submodule
+
+# This workflow will trigger on pushes to the main branch and pull requests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  update_submodule:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the main repository and submodules
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: true  # Automatically initialize and update submodules
+
+    # Step 2: Pull and update the submodule to the latest commit from its remote
+    - name: Pull and update submodule
+      run: |
+        git submodule update --remote --recursive
+        git add .
+    
+    # Step 3: Commit the updated submodule reference
+    - name: Commit changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Auto-update submodule to the latest commit" || echo "No changes to commit"
+    
+    # Step 4: Push changes to the main repository
+    - name: Push changes
+      run: |
+        git push origin main || echo "No changes to push"
