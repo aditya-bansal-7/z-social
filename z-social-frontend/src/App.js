@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { Login } from './Components';
+import  Login  from './Components/Login';
 import Home from './Container/Home';
 
 const App = () => {
