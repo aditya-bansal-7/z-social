@@ -26,7 +26,8 @@ const Sidebar = ({user , closeToggle}) => {
         <div className="flex flex-col gap-5">
 
           <NavLink
-            to="/"
+            to="/explore"
+            end
             className={({ isActive }) => (isActive ? isActiveStyle : isNotActiveStyle)}
             onClick={handleCloseSidebar}
           >
@@ -36,11 +37,11 @@ const Sidebar = ({user , closeToggle}) => {
           <h3 className="mt-2 px-5 text-base 2xl:text-xl">Discover cateogries</h3>
           {categories.slice(0 , categories.length -1).map((category) => (
             <NavLink
-              to={`/category/${category.name}`}
+              to={`/explore/category/${category.name}`}
               className={({ isActive }) => (isActive ? isActiveStyle : isNotActiveStyle)}
               onClick={handleCloseSidebar}
               key={category.name}>
-                <img src={category.image} className="w-8 h-8 rounded-full shadow-sm" />
+                <img src={category.image} alt='category' className="w-8 h-8 rounded-full shadow-sm" />
                 {category.name}
             </NavLink>
           ))}
@@ -48,7 +49,7 @@ const Sidebar = ({user , closeToggle}) => {
     </div>
     {user && (
       <Link
-      to={`/user-profile/${user._id}`}
+      to={`/explore/user-profile/${user._id}`}
       className='flex my-5 mb-3 gap-2 p-2 items-center bg-white rounded-lg shadow-lg mx-3'
       onClick={handleCloseSidebar}
       >

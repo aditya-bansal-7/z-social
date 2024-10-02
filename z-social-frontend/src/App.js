@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import  Login  from './Components/Login';
 import Home from './Container/Home';
+import Landing from './Container/Landing';
 
 const App = () => {
   const navigate = useNavigate();
@@ -23,7 +24,8 @@ const App = () => {
   return (
     <Routes>
       <Route path="login" element={<Login />} />
-      <Route path="/*" element={<Home />} />
+      <Route path="/explore/*" element={<Home />} />
+      <Route path="/*" element={<Landing />} />
     </Routes>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { MdDownloadForOffline } from 'react-icons/md';
 import { Link, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,22 +17,22 @@ const PinDetails = ({user:{user}}) => {
   const [comment, setComment] = useState('');
   const [addingComment, setAddingComment] = useState(false);
 
-  const fetchPinDetails = () => {
+  const fetchPinDetails = useCallback(() => {
     const query = pinDetailQuery(pinId);
 
     if (query) {
-      client.fetch(`${query}`).then((data) => {
+      client.fetch(query).then((data) => {
         setPinDetail(data[0]);
-        console.log(data);
         if (data[0]) {
-          const query1 = pinDetailMorePinQuery(data[0]);
-          client.fetch(query1).then((res) => {
+          const relatedPinsQuery = pinDetailMorePinQuery(data[0]);
+          client.fetch(relatedPinsQuery).then((res) => {
             setPins(res);
           });
         }
       });
     }
-  };
+  }, [pinId]);
+
   const addComment = () => {
     if (comment) {
       setAddingComment(true);
@@ -54,7 +54,7 @@ const PinDetails = ({user:{user}}) => {
 
   useEffect(() => {
     fetchPinDetails();
-  }, [pinId]);
+  }, [fetchPinDetails]);
 
   if(!pinDetail) return <Spinner msg="Loading pin details ..."/>
   return (
@@ -88,7 +88,7 @@ const PinDetails = ({user:{user}}) => {
               </h1>
               <p className="mt-3">{pinDetail.about}</p>
             </div>
-            <Link to={`/user-profile/${pinDetail?.postedBy._id}`} className="flex gap-2 mt-5 items-center bg-white rounded-lg ">
+            <Link to={`../user-profile/${pinDetail?.postedBy._id}`} className="flex gap-2 mt-5 items-center bg-white rounded-lg ">
               <img src={pinDetail?.postedBy.image} className="w-10 h-10 rounded-full" alt="user-profile" />
               <p className="font-bold">{pinDetail?.postedBy.userName}</p>
             </Link>
@@ -109,7 +109,7 @@ const PinDetails = ({user:{user}}) => {
               ))}
             </div>
             <div className="flex flex-wrap mt-6 gap-3">
-              <Link to={`/user-profile/${user._id}`}>
+              <Link to={`../user-profile/${user._id}`}>
                 <img src={user.image} className="w-10 h-10 rounded-full cursor-pointer" alt="user-profile" />
               </Link>
               <input
