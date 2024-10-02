@@ -23,7 +23,7 @@ const Home = () => {
       setUser(data[0])
     })
 
-  }, [])
+  }, [userInfo?.googleId])
   
   useEffect(() => {
     scrollRef.current.scrollTo(0,0);
@@ -41,7 +41,7 @@ const Home = () => {
               <img src={logo} alt='Logo' className='w-28' />
           </Link>
           <Link to={`user-profile/${User?._id}`}>
-              <img src={User?.image} alt='Logo' className='w-28' />
+              <img src={User?.image} alt='Logo' className='md:w-28 w-14 md:h-28 h-14' />
           </Link>
         </div>
         {toggleSidebar && (

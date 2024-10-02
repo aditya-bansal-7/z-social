@@ -35,6 +35,7 @@ const UserProfile = () => {
   const [wrongImageType, setWrongImageType] = useState(false);
   const navigate = useNavigate();
   const { userId } = useParams();
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const query = userQuery(userId);
@@ -44,6 +45,9 @@ const UserProfile = () => {
       setNewUserName(data[0].userName); 
       setNewUserImage(data[0].image);
     });
+    if (window.innerWidth < 768) {
+      setIsMobile(true);
+    }
   }, [userId]);
 
   useEffect(() => {
@@ -232,10 +236,10 @@ const UserProfile = () => {
                   <button
                     type="button"
                     onClick={() => setEditProfile(!editProfile)}
-                    className="bg-red-500 text-white font-bold p-2 rounded-full w-36 outline-none opacity-70 hover:opacity-100"
+                    className="bg-red-500 text-white font-bold p-2 rounded-full lg:w-32 w-full lg:h-12 h-auto aspect-square lg:m-0 m-2 outline-none opacity-70 hover:opacity-100"
                   >
                     <p className="flex justify-center items-center gap-2">
-                      <MdModeEdit /> Edit Profile
+                      <MdModeEdit /> {!isMobile && "Edit Profile" }
                     </p>
                   </button>
                 </div>
@@ -248,10 +252,10 @@ const UserProfile = () => {
                   <button
                     type="button"
                     onClick={() => setEditProfile(!editProfile)}
-                    className="bg-red-500 text-white font-bold p-2 rounded-full w-36 outline-none opacity-70 hover:opacity-100"
+                    className="bg-red-500 text-white font-bold p-2 rounded-full lg:w-32 w-full lg:h-12 h-auto aspect-square lg:m-0 m-2 outline-none opacity-70 hover:opacity-100"
                   >
                     <p className="flex justify-center items-center gap-2">
-                      <MdModeEdit /> Edit Profile
+                      <MdModeEdit /> {!isMobile && "Edit Profile" }
                     </p>
                   </button>
                 </div>
