@@ -21,6 +21,7 @@
 
 .row:nth-child(2){
     justify-content: space-around;
+    padding: 10em;
 }
 
 .video-container {

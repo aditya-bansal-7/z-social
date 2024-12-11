@@ -36,16 +36,19 @@ const UserProfile = () => {
   const [wrongImageType, setWrongImageType] = useState(false);
   const navigate = useNavigate();
   const { userId } = useParams();
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(false);
+
+  const User = fetchUser(); // Fetch the user once and store it
 
   useEffect(() => {
     const query = userQuery(userId);
 
     client.fetch(query).then((data) => {
       setUser(data[0]);
-      setNewUserName(data[0].userName); 
+      setNewUserName(data[0].userName);
       setNewUserImage(data[0].image);
     });
+
     if (window.innerWidth < 768) {
       setIsMobile(true);
     }
@@ -72,7 +75,11 @@ const UserProfile = () => {
     navigate("/login");
   };
 
-  const User = fetchUser();
+  useEffect(() => {
+    if (!User) {
+      navigate("/login");
+    }
+  }, [User, navigate]);
 
   const uploadImage = (e) => {
     const { type, name } = e.target.files[0];
@@ -88,9 +95,12 @@ const UserProfile = () => {
       setLoading(true);
 
       client.assets
-        .upload("image", e.target.files[0], { contentType: type, filename: name })
+        .upload("image", e.target.files[0], {
+          contentType: type,
+          filename: name,
+        })
         .then((document) => {
-          setImageAsset(document); 
+          setImageAsset(document);
           setNewUserImage(document.url);
           setLoading(false);
         })
@@ -105,27 +115,35 @@ const UserProfile = () => {
 
   const handleProfileUpdate = () => {
     setLoading(true);
-  
+
     const doc = {
       _id: user._id,
       _type: "user",
       userName: newUserName,
       image: newUserImage,
     };
-  
+
     client
-      .patch(user._id) 
+      .patch(user._id)
       .set(doc)
       .commit()
       .then(() => {
         const nUser = JSON.parse(localStorage.getItem("user"));
-        const localUser = { ...nUser, userName: newUserName, image: newUserImage };
-  
-        const updatedUser = { ...user, userName: newUserName, image: newUserImage };
+        const localUser = {
+          ...nUser,
+          userName: newUserName,
+          image: newUserImage,
+        };
+
+        const updatedUser = {
+          ...user,
+          userName: newUserName,
+          image: newUserImage,
+        };
         setUser(updatedUser);
-  
+
         localStorage.setItem("user", JSON.stringify(localUser));
-  
+
         setEditProfile(false);
         setLoading(false);
       })
@@ -134,7 +152,6 @@ const UserProfile = () => {
         setLoading(false);
       });
   };
-  
 
   if (!user) {
     return <Spinner msg="Loading user profile" />;
@@ -147,7 +164,9 @@ const UserProfile = () => {
         <div className="flex justify-center z-10 w-full h-screen absolute pointer-events-none bg-gray-800 bg-opacity-50">
           <div className="w-2/5 h-auto mt-20 p-5 flex justify-center items-center pointer-events-auto bg-white z-10 rounded-lg shadow-lg">
             <div className="w-full">
-              <h2 className="text-2xl font-bold mb-5 text-center">Edit Profile</h2>
+              <h2 className="text-2xl font-bold mb-5 text-center">
+                Edit Profile
+              </h2>
               <label className="block mb-3">
                 <span className="text-gray-700">Username</span>
                 <input
@@ -165,13 +184,17 @@ const UserProfile = () => {
                 </label>
                 <div className="flex flex-col justify-center items-center border-2 border-dotted border-gray-300 p-5 h-60 w-full cursor-pointer">
                   {loading && <Spinner />}
-                  {wrongImageType && <p className="text-red-500">Invalid file type.</p>}
+                  {wrongImageType && (
+                    <p className="text-red-500">Invalid file type.</p>
+                  )}
                   {!imageAsset ? (
                     <label>
                       <div className="flex flex-col items-center justify-center h-full">
                         <AiOutlineCloudUpload className="text-6xl text-gray-400" />
                         <p className="text-lg">Click to upload</p>
-                        <p className="mt-4 text-gray-400">Use high-quality JPG, JPEG, PNG less than 20MB</p>
+                        <p className="mt-4 text-gray-400">
+                          Use high-quality JPG, JPEG, PNG less than 20MB
+                        </p>
                       </div>
                       <input
                         type="file"
@@ -190,8 +213,7 @@ const UserProfile = () => {
                       <button
                         type="button"
                         className="absolute bottom-3 right-3 p-3 rounded-full bg-white text-xl cursor-pointer outline-none hover:shadow-md transition-all duration-500 ease-in-out"
-                        onClick={() => setImageAsset(null)}
-                      >
+                        onClick={() => setImageAsset(null)}>
                         <MdDelete />
                       </button>
                     </div>
@@ -202,15 +224,13 @@ const UserProfile = () => {
               <div className="flex justify-between mt-4">
                 <button
                   onClick={() => setEditProfile(false)}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-md"
-                >
+                  className="bg-gray-500 text-white px-4 py-2 rounded-md">
                   Cancel
                 </button>
                 <button
                   onClick={handleProfileUpdate}
                   className="bg-red-500 text-white px-4 py-2 rounded-md"
-                  disabled={loading}
-                >
+                  disabled={loading}>
                   {loading ? "Updating..." : "Save"}
                 </button>
               </div>
@@ -222,9 +242,12 @@ const UserProfile = () => {
       {/* User Profile */}
       <div className="flex flex-col pb-5">
         <div className="relative flex flex-col mb-7">
-        <div className="flex flex-col justify-center items-center">
-              <img  className="w-full h-370 2xl:h-370 shadow-lg object-cover" src="https://images.pexels.com/photos/26853148/pexels-photo-26853148/free-photo-of-pure-lake-by-rocky-mountains.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt="banner-pic" />
+          <div className="flex flex-col justify-center items-center">
+            <img
+              className="w-full h-370 2xl:h-370 shadow-lg object-cover"
+              src="https://images.pexels.com/photos/26853148/pexels-photo-26853148/free-photo-of-pure-lake-by-rocky-mountains.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="banner-pic"
+            />
             <img
               className="rounded-full w-20 h-20 -mt-10 shadow-xl object-cover"
               src={user.image}
@@ -232,31 +255,30 @@ const UserProfile = () => {
             />
 
             <div className="flex w-full p-4 justify-between">
-            {userId === User.googleId && (
-                <div className="text-center opacity-0 pointer-events-none flex justify-end mb-7">
-                  <button
-                    type="button"
-                    onClick={() => setEditProfile(!editProfile)}
-                    className="bg-red-500 text-white font-bold p-2 rounded-full lg:w-32 w-full lg:h-12 h-auto aspect-square lg:m-0 m-2 outline-none opacity-70 hover:opacity-100"
-                  >
-                    <p className="flex justify-center items-center gap-2">
-                      <MdModeEdit /> {!isMobile && "Edit Profile" }
-                    </p>
-                  </button>
-                </div>
-              )}
-              <h1 className="font-bold text-3xl flex justify-center w-full text-center mt-3">
-                {user.userName}
-              </h1>
-              {userId === User.googleId && (
+              {userId === User?.googleId && (
                 <div className="text-center flex justify-end mb-7">
                   <button
                     type="button"
                     onClick={() => setEditProfile(!editProfile)}
-                    className="bg-red-500 text-white font-bold p-2 rounded-full lg:w-32 w-full lg:h-12 h-auto aspect-square lg:m-0 m-2 outline-none opacity-70 hover:opacity-100"
-                  >
+                    className="bg-red-500 text-white font-bold p-2 rounded-full lg:w-32 w-full lg:h-12 h-auto aspect-square lg:m-0 m-2 outline-none opacity-70 hover:opacity-100">
                     <p className="flex justify-center items-center gap-2">
-                      <MdModeEdit /> {!isMobile && "Edit Profile" }
+                      <MdModeEdit /> {!isMobile && "Edit Profile"}
+                    </p>
+                  </button>
+                </div>
+              )}
+
+              <h1 className="font-bold text-3xl flex justify-center w-full text-center mt-3">
+                {user.userName}
+              </h1>
+              {userId === User?.googleId && (
+                <div className="text-center flex justify-end mb-7">
+                  <button
+                    type="button"
+                    onClick={() => setEditProfile(!editProfile)}
+                    className="bg-red-500 text-white font-bold p-2 rounded-full lg:w-32 w-full lg:h-12 h-auto aspect-square lg:m-0 m-2 outline-none opacity-70 hover:opacity-100">
+                    <p className="flex justify-center items-center gap-2">
+                      <MdModeEdit /> {!isMobile && "Edit Profile"}
                     </p>
                   </button>
                 </div>
@@ -265,7 +287,7 @@ const UserProfile = () => {
           </div>
 
           <div className="absolute top-0 z-1 right-0 p-2">
-            {userId === User.googleId && (
+            {userId === User?.googleId && (
               <GoogleLogout
                 clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}
                 render={(renderProps) => (
@@ -273,8 +295,7 @@ const UserProfile = () => {
                     type="button"
                     className=" bg-white p-2 rounded-full cursor-pointer outline-none shadow-md"
                     onClick={logout}
-                    disabled={renderProps.disabled}
-                  >
+                    disabled={renderProps.disabled}>
                     <AiOutlineLogout color="red" fontSize={21} />
                   </button>
                 )}
@@ -296,8 +317,7 @@ const UserProfile = () => {
             }}
             className={`${
               activeBtn === "created" ? activeBtnStyles : notActiveBtnStyles
-            }`}
-          >
+            }`}>
             Created
           </button>
           <button
@@ -308,8 +328,7 @@ const UserProfile = () => {
             }}
             className={`${
               activeBtn === "saved" ? activeBtnStyles : notActiveBtnStyles
-            }`}
-          >
+            }`}>
             Saved
           </button>
         </div>

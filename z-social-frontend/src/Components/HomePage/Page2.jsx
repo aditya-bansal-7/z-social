@@ -3,10 +3,13 @@ import { page2GridArray } from "../../utils/constants";
 import ReactPlayer from "react-player";
 import "./Page2.css";
 import { Link } from "react-router-dom";
+import { fetchUser } from "../../utils/fetchUser";
 
 const Page2 = () => {
   const galleryRef = useRef(null);
   const [items, setItems] = useState([]);
+
+  const userInfo = fetchUser();
 
   useEffect(() => {
     const generateItems = () => {
@@ -88,7 +91,7 @@ const Page2 = () => {
                 fill-rule="evenodd"></path>
             </svg>
             <span class="inline-block tabular-nums tracking-wider font-display font-medium text-white">
-              6
+              1
             </span>
           </div>
         </button>
@@ -101,7 +104,7 @@ const Page2 = () => {
           </p>
         </div>
         <div className="flex flex-col justify-start items-center w-full h-full">
-          <Link to="/explore">
+          <Link to={userInfo ? "/explore" : "/login"}>
             <button class="relative inline-block p-px font-semibold leading-6 text-white bg-gray-800 shadow-2xl cursor-pointer rounded-xl shadow-zinc-900 transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95">
               <span class="absolute inset-0 rounded-xl bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
 

@@ -10,6 +10,7 @@ import { client } from "../client";
 import TelegramLogin from "./Telegram_login";
 import { fetchAuth } from "../utils/fetchAuth";
 import { v4 as uuidv4 } from "uuid";
+import transition from "../transition";
 
 const Form = () => {
   const navigate = useNavigate();
@@ -456,4 +457,4 @@ export const StyledWrapper = styled.div`
   }
 `;
 
-export default Form;
+export default transition(Form);
