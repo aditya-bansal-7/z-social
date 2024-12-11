@@ -1,21 +1,14 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import Page2 from "../Components/HomePage/Page2";
 
 const Landing = () => {
   return (
-
-    
-    <div>
+    // <>
+    //   <Background>
         
-        <Link to="/explore" >
+    //   </Background>
+      <Page2 />
+  );
+};
 
-        <button>
-            Home
-        </button>
-        
-        </Link>
-    </div>
-  )
-}
-
-export default Landing
+export default Landing;

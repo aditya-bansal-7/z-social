@@ -6,7 +6,6 @@ import { client } from '../client';
 const Telegram_login = () => {
     const navigate = useNavigate();
     const onTelegramAuth = (user) => {
-        console.log(user);
         const data = {
           googleId:user.id.toString(),
           imageUrl:user.photo_url,

@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.slide-in {
+    transform-origin: bottom;
+}
+
+.slide-out {
+    transform-origin: top;
+}
+
+::-webkit-scrollbar {
+    display: none; 
+  }

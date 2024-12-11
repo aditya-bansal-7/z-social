@@ -57,7 +57,7 @@ const Form = () => {
     };
 
     client.createIfNotExists(doc).then(() => {
-      navigate("/", { replace: true });
+      navigate("/explore", { replace: true });
     });
   };
 
@@ -91,7 +91,7 @@ const Form = () => {
 
         localStorage.setItem("user", JSON.stringify(u2));
 
-        navigate("/", { replace: true });
+        navigate("/explore", { replace: true });
       } else {
         setError("Invalid email or password ");
       }
@@ -150,7 +150,7 @@ const Form = () => {
       localStorage.setItem("user", JSON.stringify(u2));
 
       await client.create(doc);
-      navigate("/", { replace: true });
+      navigate("/explore", { replace: true });
 
 
     } catch (err) {
