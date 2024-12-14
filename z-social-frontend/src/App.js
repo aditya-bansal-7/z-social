@@ -13,7 +13,7 @@ const App = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="login" element={<Login />} />
-        <Route path="/explore/*" element={<Home />} />
+        <Route path="/explore/*" element={<Home />} loader={Home} />
         <Route path="/*" element={<Landing />} />
       </Routes>
     </AnimatePresence>

@@ -38,7 +38,7 @@ const UserProfile = () => {
   const { userId } = useParams();
   const [isMobile, setIsMobile] = useState(false);
 
-  const User = fetchUser(); // Fetch the user once and store it
+  const User = fetchUser();
 
   useEffect(() => {
     const query = userQuery(userId);
@@ -254,9 +254,9 @@ const UserProfile = () => {
               alt="user-pic"
             />
 
-            <div className="flex w-full p-4 justify-between">
+            <div className="flex w-full p-4  justify-between">
               {userId === User?.googleId && (
-                <div className="text-center flex justify-end mb-7">
+                <div className="text-cente flex invisible justify-end mb-7">
                   <button
                     type="button"
                     onClick={() => setEditProfile(!editProfile)}

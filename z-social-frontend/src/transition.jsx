@@ -9,8 +9,6 @@ const transition = (OgComponent) => {
 
         {/* Slide-in animation */}
         
-
-        {/* Slide-out animation */}
         <motion.div
           className="fixed top-0 left-0 w-full h-screen bg-black slide-in"
           initial={{ scaleY: 0 }}
@@ -18,6 +16,8 @@ const transition = (OgComponent) => {
           exit={{ scaleY: 1 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         />
+        {/* Slide-out animation */}
+        
 
         <motion.div
           className="fixed top-0 left-0 w-full h-screen bg-black slide-out"
